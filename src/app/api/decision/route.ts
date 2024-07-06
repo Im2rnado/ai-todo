@@ -9,7 +9,7 @@ export async function POST(req: Request, res: Response) {
   const { state, goal }: { state: any; goal: string } = await req.json();
 
   const agent = createAgent({
-    model: openai('gpt-3.5-turbo'),
+    model: openai('gpt-4-turbo'),
     name: 'todo',
     events,
   });
