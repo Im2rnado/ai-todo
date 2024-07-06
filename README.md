@@ -1,5 +1,5 @@
 # AI Todo
-AI Todo is an AI-powered to-do list application built with Next.js. It leverages OpenAI's API to intelligently generate, update, and manage tasks based on inputs.
+AI Todo is an AI-powered to-do list application built with Next.js. It leverages OpenAI's API to intelligently generate, update, and manage tasks based on inputs. Visit our demo here [ai-to-do.vercel.app](https://ai-to-do.vercel.app)
 
 <img src="screenshot.png" width="770px" draggable="false">
 
