@@ -1,7 +1,7 @@
 # AI Todo
 AI Todo is an AI-powered to-do list application built with Next.js. It leverages OpenAI's API to intelligently generate, update, and manage tasks based on inputs.
 
-<img src="screenshot.png" width="750px" draggable="false">
+<img src="screenshot.png" width="770px" draggable="false">
 
 ## Features
 - **Natural Language Input**: Simply input whatever you have on your mind into the text box at the top.
