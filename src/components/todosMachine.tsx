@@ -29,7 +29,7 @@ export const events = {
   'todo.update': z.object({
     todo: z.object({
       id: z.string().describe('The ID of the todo to update'),
-      title: z.string().describe('The new title of the todo').optional(),
+      title: z.string().describe('The new title of the todo'),
       content: z.string().describe('The new content of the todo').optional(),
       completed: z.boolean().describe('The new completed value').optional(),
     }),

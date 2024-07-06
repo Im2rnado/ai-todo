@@ -1,8 +1,3 @@
-/**
- * v0 by Vercel.
- * @see https://v0.dev/t/dhuko6AZAe5
- * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
- */
 'use client';
 
 import { SVGProps, useEffect, useRef, useState } from 'react';
@@ -17,6 +12,8 @@ import clsx from 'clsx';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
 import { Textarea } from './ui/textarea';
+import { Header } from './header';
+import { Footer } from './footer';
 
 const magicMachine = createMachine({
   initial: 'idle',
@@ -42,11 +39,11 @@ export function Magic(props: {
 
   return (
     <form
-      onSubmit={async (ev) => {
+      onSubmit={async (ev: any) => {
         send({ type: 'submit' });
         ev.preventDefault();
         // get prompt from FormData
-        const formData = new FormData(ev.target);
+        const formData = new FormData(ev?.target);
         const prompt = formData.get('prompt');
 
         const res = await fetch('/api/decision', {
@@ -59,7 +56,7 @@ export function Magic(props: {
 
         const data = (await res.json()) as { plan: AgentPlan<any> };
 
-        console.log(data);
+        console.log(data.plan.nextEvent);
 
         props.onEvent(data.plan.nextEvent);
         send({ type: 'submitted' });
@@ -69,11 +66,19 @@ export function Magic(props: {
         name="prompt"
         disabled={state.matches('submitting')}
         className="text-2xl p-8"
-        placeholder="✨ What would you like to do?"
+        placeholder="What would you like to do?"
       />
-      {/* <Button type="submit" disabled={state.matches('submitting')}>
-        {state.matches('submitting') ? 'Submitting...' : 'Submit'}
-      </Button> */}
+
+      <br />
+
+      <Button
+        type="submit"
+        className="text-xl p-7"
+        variant="outline"
+        disabled={state.matches('submitting')}
+      >
+        {state.matches('submitting') ? '✨ Generating...' : '✨ Generate'}
+      </Button>
     </form>
   );
 }
@@ -84,21 +89,44 @@ export function Todos() {
       todos: [
         {
           id: 'todo-1',
-          title: 'Finish React Summit talk',
-          content: 'Need to record my demos in case they fail',
+          title: 'This is a sample task',
+          content: 'This is a sample description',
           completed: false,
         },
       ],
     },
   });
-  const todos = useSelector(todosActor, (state) => state.context.todos);
-  const selectedTodo = useSelector(todosActor, (state) =>
-    state.context.todos.find((todo) => todo.id === state.context.selectedTodo)
+  const todos = useSelector(todosActor, (state: any) => state.context.todos);
+  const selectedTodo = useSelector(todosActor, (state: any) =>
+    state.context.todos.find((todo: any) => todo.id === state.context.selectedTodo)
   );
 
+  const {
+    completion: newTodoCompletion,
+    input: newTodoInput,
+    setInput: setNewTodoInput,
+    handleSubmit: handleNewTodoSubmit,
+    isLoading: isNewTodoLoading,
+  } = useCompletion({
+    api: '/api/completion',
+    onFinish: (_: any, completion: any) => {
+      const [title, ...contentArr] = completion.split('\n');
+      const content = contentArr.join('\n').trim();
+      todosActor.send({
+        type: 'todo.add',
+        todo: {
+          title: title || 'New todo',
+          content: content || 'New todo content',
+        },
+      });
+    },
+  });
+
+
   return (
-    <div className="flex h-screen w-full flex-col items-center justify-center bg-gray-100 dark:bg-gray-950">
-      <div className="w-full max-w-4xl space-y-8 rounded-lg bg-white p-8 shadow-lg dark:bg-gray-800">
+    <div className="flex h-screen w-full flex-col items-center justify-center">
+      <div className="w-full max-w-4xl space-y-8 rounded-lg p-8 shadow-2xl">
+        <Header />
         <Magic
           state={todosActor.getSnapshot()}
           onEvent={(ev) => todosActor.send(ev as any)}
@@ -113,7 +141,7 @@ export function Todos() {
                 overflowY: 'auto',
               }}
             >
-              {todos.map((todo) => (
+              {todos.map((todo: any) => (
                 <div
                   key={todo.id}
                   className={clsx(
@@ -121,7 +149,7 @@ export function Todos() {
                     {
                       'line-through': todo.completed,
                       'opacity-50': todo.completed,
-                      'border-blue-500': selectedTodo?.id === todo.id,
+                      'border-gray-900': selectedTodo?.id === todo.id,
                       'border-transparent': selectedTodo?.id !== todo.id,
                     }
                   )}
@@ -136,7 +164,7 @@ export function Todos() {
                   <Checkbox
                     id={`todo-${todo.id}`}
                     checked={todo.completed}
-                    onCheckedChange={(x) => {
+                    onCheckedChange={(x: any) => {
                       todosActor.send({
                         type: 'todo.toggle',
                         todoId: todo.id,
@@ -148,7 +176,7 @@ export function Todos() {
                       <span>{todo.title}</span>
                     </h3>
 
-                    <p className="text-gray-500 dark:text-gray-400">
+                    <p className="text-gray-900 dark:text-gray-400">
                       {todo.content}
                     </p>
                   </div>
@@ -177,20 +205,8 @@ export function Todos() {
             )}
           </div>
         </div>
-        <Button
-          onClick={() => {
-            todosActor.send({
-              type: 'todo.add',
-              todo: {
-                title: 'New todo',
-                content: 'New todo content',
-              },
-            });
-          }}
-        >
-          Add todo
-        </Button>
       </div>
+      <Footer />
     </div>
   );
 }
@@ -230,7 +246,7 @@ function EditTodo(props: {
           />
         </div>
         <Button variant="destructive" size="sm" onClick={props.onDeleteTodo}>
-          Delete todo item
+          Delete item
         </Button>
       </div>
     </div>
@@ -271,7 +287,7 @@ function TodoContent(props: {
     isLoading,
   } = useCompletion({
     api: '/api/completion',
-    onFinish: (_, completion) => {
+    onFinish: (_: any, completion: any) => {
       props.onUpdateContent(completion);
     },
   });
@@ -298,7 +314,7 @@ function TodoContent(props: {
         variant="ghost"
         disabled={isLoading}
       >
-        {isLoading ? '✨ Generating...' : '✨ Generate'}
+        {isLoading ? '✨ Generating...' : '✨ Regenerate'}
       </Button>
     </form>
   );

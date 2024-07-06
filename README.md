@@ -1,45 +1,35 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# AI Todo
+AI Todo is an AI-powered to-do list application built with Next.js. It leverages OpenAI's API to intelligently generate, update, and manage tasks based on inputs.
 
-## Getting Started
+<img src="screenshot.png" width="750px" draggable="false">
 
-First, run the development server:
+## Features
+- **Natural Language Input**: Simply input whatever you have on your mind into the text box at the top.
+- **Intelligent Task Management**: Automatically creates task names and descriptions. Understands commands such as editing tasks ("first I want pizza, then nvm I want burger") and marking tasks as complete ("I just left BurgerKing").
+- **AI Integration**: Powered by OpenAI's gpt-3.5-turbo for context-aware task processing.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Requirements
+- [NodeJS](https://nodejs.org/en/download/)
+- [OpenAI API Key](https://platform.openai.com) (if you don't have one, just use our publically hosted demo)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Usage
+1. **Install dependencies**:
+   ```
+   npm install
+   ```
+2. **Add OpenAI API key to the environment file (`.env`)**:
+   ```
+   OPENAI_API_KEY=your_api_key_here
+   ```
+2. **Build & Run the Application**:
+   ```
+   npm run build
+   npm start
+   ```
+3. **Using the Application**:
+   - Access the application in your browser.
+   - Enter tasks in the text box and interact with the AI-powered task manager.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
-
-## TODO
-
-- [ ] UI (v0)
-- [ ] State management with XState
-- [ ] Testing?
-- [ ] Todo generation with AI
-- [ ] Command bar (use shadcn/ui)
-- [ ] Command bar AI
+## Support
+If you need any help, encounter any issues, or just have a suggestion, feel free to open an issue in this repository.
+Contributions are also more than welcome! Please fork the repository and submit a pull request.
